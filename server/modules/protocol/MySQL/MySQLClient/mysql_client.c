@@ -1477,6 +1477,10 @@ static int route_by_statement(MXS_SESSION* session, uint64_t capabilities, GWBUF
         {
             CHK_GWBUF(packetbuf);
             ss_dassert(GWBUF_IS_TYPE_MYSQL(packetbuf));
+
+            MySQLProtocol* proto = session->client_dcb->protocol;
+            proto->current_command = (mysql_server_cmd_t)GWBUF_DATA(packetbuf)[4];
+
             /**
              * This means that buffer includes exactly one MySQL
              * statement.
