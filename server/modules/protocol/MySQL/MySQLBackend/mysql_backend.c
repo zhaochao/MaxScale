@@ -707,11 +707,10 @@ gw_read_and_write(DCB *dcb)
             MySQLProtocol *proto = (MySQLProtocol*)dcb->protocol;
 
             if (rcap_type_required(capabilities, RCAP_TYPE_RESULTSET_OUTPUT) &&
-                expecting_resultset(proto) && mxs_mysql_is_result_set(read_buffer, 0))
+                expecting_resultset(proto) && mxs_mysql_is_result_set(read_buffer))
             {
                 bool more = false;
-                size_t offset = 0;
-                if (modutil_count_signal_packets(read_buffer, 0, &more, &offset) != 2)
+                if (modutil_count_signal_packets(read_buffer, 0, &more) != 2)
                 {
                     dcb->dcb_readqueue = read_buffer;
                     return 0;
